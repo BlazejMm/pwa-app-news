@@ -1,0 +1,122 @@
+/* style.css */
+
+/* Ogólne tło gradientowe */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #d4edda, #c3e6cb); /* jasnozielony gradient */
+    background-attachment: fixed;
+}
+
+/* Wewnętrzne zawartości */
+body {
+    padding: 20px;
+}
+
+/* Nagłówki i tekst */
+h1 {
+    color: #222;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Kontener logowania/rejestracji */
+#loginPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #28a745;
+    width: 90%;
+    max-width: 400px;
+    height: 330px;
+    padding: 20px;
+    margin: 40px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    color: white;
+}
+
+/* Przycisk */
+button {
+    cursor: pointer;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+button:hover,
+button:focus {
+    background-color: #1e7e34;
+    outline: none;
+}
+
+/* Dashboard */
+#dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 1000px;
+    width: 90%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Nagłówek */
+header {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Nawigacja */
+nav {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    flex: 0 0 auto;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    border-bottom-color: #28a745;
+    outline: none;
+}
