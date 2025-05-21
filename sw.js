@@ -5,7 +5,7 @@ const staticAssets = [
   '/',
   '/index.html',
   '/style.css',
-  '/backendScript.js',
+  '/backend/backendScript.js',
   '/offline.html',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
