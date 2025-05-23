@@ -2,17 +2,15 @@
 
 export const openDatabase = () => {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open('NewsDB', 3); // wersja 3 = osobna przestrzeń dla newsów i users
+        const request = indexedDB.open('NewsDB', 3);
 
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
 
-            // Tworzenie obiektu "news" (offline cache)
             if (!db.objectStoreNames.contains('news')) {
                 db.createObjectStore('news', { keyPath: 'title' });
             }
-
-            // Tworzenie obiektu "users" (lokalna rejestracja/logowanie)
+            
             if (!db.objectStoreNames.contains('users')) {
                 const userStore = db.createObjectStore('users', { keyPath: 'username' });
                 userStore.createIndex('username', 'username', { unique: true });
@@ -55,7 +53,7 @@ export const saveUsersToDB = async (usersArray) => {
     const tx = db.transaction('users', 'readwrite');
     const store = tx.objectStore('users');
 
-    usersArray.forEach(user => store.put(user)); // zapis użytkowników po kluczu 'username'
+    usersArray.forEach(user => store.put(user));
 
     return new Promise((resolve, reject) => {
         tx.oncomplete = () => resolve();
