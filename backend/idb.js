@@ -1,6 +1,7 @@
 export const openDatabase = () => {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('NewsDB', 3);
+
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
 
@@ -25,7 +26,12 @@ export const saveNewsToDB = async (newsArray) => {
     const store = tx.objectStore('news');
 
     newsArray.forEach(news => store.put(news));
-    return tx.complete;
+
+    return new Promise((resolve, reject) => {
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error);
+    });
 };
 
 export const getNewsFromDB = async () => {
@@ -41,7 +47,12 @@ export const saveUsersToDB = async (usersArray) => {
     const store = tx.objectStore('users');
 
     usersArray.forEach(user => store.put(user));
-    return tx.complete;
+
+    return new Promise((resolve, reject) => {
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error);
+    });
 };
 
 export const getUsersFromDB = async () => {

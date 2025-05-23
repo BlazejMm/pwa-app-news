@@ -6,7 +6,6 @@ let saveNewsToDB, getNewsFromDB;
 let saveUsersToDB, getUsersFromDB;
 
 (async () => {
-    // Dynamiczny import modułu IndexedDB
     const idbModule = await import('./idb.js');
     saveNewsToDB = idbModule.saveNewsToDB;
     getNewsFromDB = idbModule.getNewsFromDB;
@@ -19,7 +18,6 @@ const isLoggedIn = () => {
     return localStorage.getItem('loggedIn') === 'true';
 };
 
-// Logowanie z backendu
 const login = async () => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -28,10 +26,8 @@ const login = async () => {
         const response = await fetch('http://localhost:3000/api/users');
         const users = await response.json();
 
-        // Zapisz użytkowników do IndexedDB
         await saveUsersToDB(users);
 
-        // Szukaj użytkownika w pobranych danych
         const user = users.find(u => u.username === username && u.password === password);
 
         if (user) {
@@ -43,7 +39,6 @@ const login = async () => {
     } catch (error) {
         console.error('Błąd logowania, próbuję offline...', error);
 
-        // Próba zalogowania z IndexedDB offline
         const cachedUsers = await getUsersFromDB();
         const user = cachedUsers.find(u => u.username === username && u.password === password);
 
@@ -73,13 +68,12 @@ const newUser = async (username, password) => {
         }
 
         const data = await response.json();
-        console.log(data.message); // Komunikat z serwera
+        console.log(data.message);
     } catch (error) {
         console.error('Błąd podczas tworzenia użytkownika:', error);
     }
 };
 
-// Wywołanie funkcji newUser() po kliknięciu przycisku "Zarejestruj"
 const registerButton = document.getElementById('registerButton');
 registerButton.addEventListener('click', () => {
     const username = document.getElementById('username2').value;
@@ -92,20 +86,14 @@ const logout = () => {
     localStorage.removeItem('loggedIn');
     showLoginPage();
 };
-
-// Pokaż ekran logowania
 const showLoginPage = () => {
     document.getElementById('loginPage').style.display = 'block';
     document.getElementById('dashboard').style.display = 'none';
 };
-
-// Pokaż główny dashboard
 const showDashboard = () => {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
 };
-
-// Sprawdź stan zalogowania przy załadowaniu strony
 window.onload = () => {
     if (isLoggedIn()) {
         showDashboard();
@@ -113,7 +101,6 @@ window.onload = () => {
         showLoginPage();
     }
 };
-
 async function showNews() {
     const newsSection = document.getElementById('newsSection');
     const newsList = document.getElementById('newsList');
@@ -125,7 +112,7 @@ async function showNews() {
         const data = await response.json();
 
         if (data.results) {
-            await saveNewsToDB(data.results); // zapisujemy do IndexedDB
+            await saveNewsToDB(data.results);
             renderNews(data.results);
         }
     } catch (error) {
@@ -138,7 +125,6 @@ async function showNews() {
         }
     }
 }
-
 function renderNews(newsArray) {
     const newsList = document.getElementById('newsList');
     newsList.innerHTML = '';

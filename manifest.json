@@ -1,6 +1,7 @@
 {
-    "name": "Moja aplikacja PWA",
+    "name": "Aplikacja PWA",
     "short_name": "PWA App",
+    "description": "Aplikacja PWA do wyświetlanie krótkich wiadomości",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
