@@ -10,34 +10,38 @@
 </head>
 
 <body>
-    <div id="loginPage">
-        <h1>Logowanie</h1>
-        <input type="text" id="username" placeholder="Nazwa użytkownika">
-        <input type="password" id="password" placeholder="Hasło">
-        <button onclick="login()">Zaloguj</button>
+    <div id="loginPage" class="container">
+        <section>
+            <h1>Logowanie</h1>
+            <input type="text" id="username" placeholder="Nazwa użytkownika">
+            <input type="password" id="password" placeholder="Hasło">
+            <button onclick="login()">Zaloguj</button>
+        </section>
 
-        <h1>Rejestracja nowego użytkownika</h1>
-        <input type="text" id="username2" placeholder="Nazwa użytkownika">
-        <input type="password" id="password2" placeholder="Hasło">
-        <button id="registerButton">Zarejestruj</button>
+        <hr>
+
+        <section>
+            <h1>Rejestracja</h1>
+            <input type="text" id="username2" placeholder="Nazwa użytkownika">
+            <input type="password" id="password2" placeholder="Hasło">
+            <button id="registerButton">Zarejestruj</button>
+        </section>
     </div>
 
-    <div id="dashboard" style="display:none;">
+    <div id="dashboard" style="display:none;" class="container">
         <header>
-            <h1>Dashboard</h1>
+            <h1>Panel użytkownika</h1>
             <button onclick="logout()">Wyloguj</button>
         </header>
 
-        <nav>
-            <ul>
-                <li><a href="#" onclick="showNews()">Aktualności</a></li>
-            </ul>
-        </nav>
-
         <main>
-            <p>Witaj użytkowniku!</p>
+            <section>
+                <h2>Witaj w Twoim centrum wiadomości!</h2>
+                <button onclick="showNews()">📰 Wczytaj newsy</button>
+            </section>
+
             <section id="newsSection" style="display:none;">
-                <h2>Aktualności technologiczne</h2>
+                <h2>Najnowsze wiadomości ze świata technologii</h2>
                 <ul id="newsList"></ul>
             </section>
         </main>
@@ -47,10 +51,10 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
-                .then(function () {
+                .then(() => {
                     console.log('Service Worker zarejestrowany poprawnie.');
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     console.error('Błąd podczas rejestracji Service Workera:', error);
                 });
         }
