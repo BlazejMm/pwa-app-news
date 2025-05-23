@@ -22,56 +22,32 @@ const login = async () => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    try {
-        const response = await fetch('http://localhost:3000/api/users');
-        const users = await response.json();
+    const cachedUsers = await getUsersFromDB();
+    const user = cachedUsers.find(u => u.username === username && u.password === password);
 
-        await saveUsersToDB(users);
-
-        const user = users.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            localStorage.setItem('loggedIn', 'true');
-            showDashboard();
-        } else {
-            alert('Nieprawidłowa nazwa użytkownika lub hasło.');
-        }
-    } catch (error) {
-        console.error('Błąd logowania, próbuję offline...', error);
-
-        const cachedUsers = await getUsersFromDB();
-        const user = cachedUsers.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            localStorage.setItem('loggedIn', 'true');
-            showDashboard();
-        } else {
-            alert('Nie można połączyć z serwerem i nie znaleziono użytkownika w pamięci lokalnej.');
-        }
+    if (user) {
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('loggedUser', username);
+        showDashboard();
+    } else {
+        alert('Nieprawidłowa nazwa użytkownika lub hasło.');
     }
 };
 
 
 const newUser = async (username, password) => {
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        });
+    const users = await getUsersFromDB();
 
-        if (!response.ok) {
-            const errorMessage = await response.text();
-            throw new Error(errorMessage);
-        }
-
-        const data = await response.json();
-        console.log(data.message);
-    } catch (error) {
-        console.error('Błąd podczas tworzenia użytkownika:', error);
+    const userExists = users.some(u => u.username === username);
+    if (userExists) {
+        alert('Użytkownik już istnieje!');
+        return;
     }
+
+    const newUserObj = { username, password };
+    await saveUsersToDB([newUserObj]);
+
+    alert('Użytkownik został zarejestrowany.');
 };
 
 const registerButton = document.getElementById('registerButton');
@@ -82,10 +58,13 @@ registerButton.addEventListener('click', () => {
     alert('Użytkownik został zarejestrowany.');
 });
 
+
 const logout = () => {
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('loggedUser');
     showLoginPage();
 };
+
 const showLoginPage = () => {
     document.getElementById('loginPage').style.display = 'block';
     document.getElementById('dashboard').style.display = 'none';

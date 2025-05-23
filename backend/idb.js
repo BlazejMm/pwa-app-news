@@ -1,3 +1,5 @@
+//idb.js
+
 export const openDatabase = () => {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('NewsDB', 3);
