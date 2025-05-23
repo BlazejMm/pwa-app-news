@@ -1,16 +1,18 @@
-//idb.js
+// idb.js
 
 export const openDatabase = () => {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open('NewsDB', 3);
+        const request = indexedDB.open('NewsDB', 3); // wersja 3 = osobna przestrzeń dla newsów i users
 
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
 
+            // Tworzenie obiektu "news" (offline cache)
             if (!db.objectStoreNames.contains('news')) {
                 db.createObjectStore('news', { keyPath: 'title' });
             }
 
+            // Tworzenie obiektu "users" (lokalna rejestracja/logowanie)
             if (!db.objectStoreNames.contains('users')) {
                 const userStore = db.createObjectStore('users', { keyPath: 'username' });
                 userStore.createIndex('username', 'username', { unique: true });
@@ -40,7 +42,12 @@ export const getNewsFromDB = async () => {
     const db = await openDatabase();
     const tx = db.transaction('news', 'readonly');
     const store = tx.objectStore('news');
-    return store.getAll();
+
+    return new Promise((resolve, reject) => {
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
 };
 
 export const saveUsersToDB = async (usersArray) => {
@@ -48,7 +55,7 @@ export const saveUsersToDB = async (usersArray) => {
     const tx = db.transaction('users', 'readwrite');
     const store = tx.objectStore('users');
 
-    usersArray.forEach(user => store.put(user));
+    usersArray.forEach(user => store.put(user)); // zapis użytkowników po kluczu 'username'
 
     return new Promise((resolve, reject) => {
         tx.oncomplete = () => resolve();
@@ -61,5 +68,10 @@ export const getUsersFromDB = async () => {
     const db = await openDatabase();
     const tx = db.transaction('users', 'readonly');
     const store = tx.objectStore('users');
-    return store.getAll();
+
+    return new Promise((resolve, reject) => {
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
 };

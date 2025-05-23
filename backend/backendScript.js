@@ -1,7 +1,5 @@
 // backendscript.js
 
-const apiUrl = 'http://localhost:3000/api/users';
-
 let saveNewsToDB, getNewsFromDB;
 let saveUsersToDB, getUsersFromDB;
 
@@ -55,7 +53,6 @@ registerButton.addEventListener('click', () => {
     const username = document.getElementById('username2').value;
     const password = document.getElementById('password2').value;
     newUser(username, password);
-    alert('Użytkownik został zarejestrowany.');
 });
 
 
